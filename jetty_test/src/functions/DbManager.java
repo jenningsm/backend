@@ -1,0 +1,50 @@
+package functions;
+
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
+public class DbManager {
+//        static private String databaseURL = "jdbc:mysql://ec2-23-22-104-155.compute-1.amazonaws.com:3306/";
+		static private String databaseURL = "jdbc:mysql://ec2-23-22-104-155.compute-1.amazonaws.com:3306/";
+		static private String dbname = "MyVent";
+        static private String username = "ibm";
+        static private String password = "cs130";
+	
+        
+	/**
+	 * Opens a database connection
+	 * @param dbName The database name
+	 * @param readOnly True if the connection should be opened read-only
+	 * @return An open java.sql.Connection
+	 * @throws SQLException
+	 */
+	public static Connection getConnection(boolean readOnly)
+	throws SQLException {        
+            Connection conn = DriverManager.getConnection(
+                databaseURL + dbname, username, password);
+            conn.setReadOnly(readOnly);        
+            return conn;
+        }
+	
+	public static boolean closeConnection(Connection conn) throws SQLException
+	{
+		
+			conn.close();
+			return true;
+		
+	
+	}
+	
+	private DbManager() {}
+	
+	static {
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+}
